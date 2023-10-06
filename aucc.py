@@ -1,5 +1,14 @@
+from sklearn.utils import check_X_y
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics.cluster._unsupervised import check_number_of_labels
+from sklearn.metrics import roc_auc_score
+
+from scipy.spatial.distance import pdist
+
+import numpy as np
+
 def aucc(X, labels, metric='euclidean'):
-  """Computes AUCC (Area Under the (ROC) Curve for Clustering).
+    """Computes AUCC (Area Under the (ROC) Curve for Clustering).
 
     Maximum score is 1.0. The higher the score, the better the partition.
     
@@ -35,7 +44,11 @@ def aucc(X, labels, metric='euclidean'):
 
     n_pairs = n_samples*(n_samples-1)//2
 
-    pairwise_labels    = 1 - pdist(np.matrix(labels).transpose,'hamming')
+    if np.matrix(labels).shape[0] == 1:
+        pairwise_labels    = 1 - pdist(np.matrix(labels).transpose(),'hamming')
+    else:
+        pairwise_labels    = 1 - pdist(np.matrix(labels),'hamming')
+    
     pairwise_distances = 1 - pdist(X,metric)
 
     return roc_auc_score(pairwise_labels,pairwise_distances)
