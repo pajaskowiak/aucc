@@ -48,7 +48,7 @@ def aucc(X, labels, metric='euclidean'):
         pairwise_labels    = 1 - pdist(np.matrix(labels).transpose(),'hamming')
     else:
         pairwise_labels    = 1 - pdist(np.matrix(labels),'hamming')
-    tmpdist=pdist(X,metric)
+    tmpdist = pdist(X,metric)
     tmpdist = (tmpdist - np.min(tmpdist))/(np.max(tmpdist) - np.min(tmpdist))
     pairwise_distances = 1 - tmpdist
 
